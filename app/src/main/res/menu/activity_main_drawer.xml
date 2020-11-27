@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view"
+
+    >
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_24px"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_routes"
+            android:icon="@drawable/ic_bus"
+            android:title="@string/menu_routes" />
+        <item
+            android:id="@+id/nav_real_time_routes"
+            android:icon="@drawable/ic_seek_bus"
+            android:title="@string/menu_real_time_routes" />
+        <item
+            android:id="@+id/nav_report_problem"
+            android:icon="@drawable/ic_report_problem_24px"
+            android:title="@string/menu_report_problem"/>
+        <item
+            android:id="@+id/nav_config"
+            android:icon="@drawable/ic_settings_24px"
+            android:title="@string/menu_configuration"/>
+
+    </group>
+</menu>
