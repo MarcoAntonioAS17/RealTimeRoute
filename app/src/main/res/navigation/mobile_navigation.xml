@@ -13,13 +13,25 @@
 
     <fragment
         android:id="@+id/nav_routes"
-        android:name="com.example.project_test.ui.gallery.GalleryFragment"
+        android:name="com.example.project_test.ui.routes.RoutesFragment"
         android:label="@string/menu_routes"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_see_routes" />
 
     <fragment
         android:id="@+id/nav_real_time_routes"
-        android:name="com.example.project_test.ui.slideshow.SlideshowFragment"
+        android:name="com.example.project_test.ui.realTimeRoutes.RTRFragment"
         android:label="@string/menu_real_time_routes"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_real_time_routes" />
+
+    <fragment
+        android:id="@+id/nav_report_problem"
+        android:name="com.example.project_test.ui.reportProblem.ReportProFragment"
+        android:label="@string/menu_report_problem"
+        tools:layout="@layout/fragment_report_problem"/>
+
+    <fragment
+        android:id="@+id/nav_config"
+        android:name="com.example.project_test.ui.Configuration.ConfigFragment"
+        android:label="@string/menu_configuration"/>
+
 </navigation>
