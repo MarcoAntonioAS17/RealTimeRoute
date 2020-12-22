@@ -73,6 +73,7 @@ public class MapsActivity extends Fragment
         List<LatLng> ruta_camion = get_route_pouints();
 
         Double rotation = 0.0;
+
         for (int i=0; i < ruta_camion.size()-1; i+=2){
             LatLng punto_1 = ruta_camion.get(i);
             LatLng punto_2 = ruta_camion.get(i+1);
@@ -99,20 +100,50 @@ public class MapsActivity extends Fragment
                 .color(Color.RED)
                 .addAll(ruta_camion));
 
+
+        ruta_camion = get_route_pouints2();
+
+        for (int i=0; i < ruta_camion.size()-1; i+=2){
+            LatLng punto_1 = ruta_camion.get(i);
+            LatLng punto_2 = ruta_camion.get(i+1);
+
+            rotation = SphericalUtil.computeHeading(punto_1,punto_2);
+
+            double LatInt = punto_1.latitude + punto_2.latitude;
+            double LngInt = punto_1.longitude + punto_2.longitude;
+
+            LatLng IntPoint = new LatLng(LatInt/2,LngInt/2);
+
+            googleMap.addMarker(new MarkerOptions()
+                    .position(IntPoint)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_arrow))
+                    .flat(true)
+                    .anchor(0.5f, 0.5f)
+                    .rotation(Float.parseFloat(rotation.toString()))
+
+            );
+        }
+
+        googleMap.addPolyline(new PolylineOptions()
+                .clickable(true)
+                .color(Color.GREEN)
+                .addAll(ruta_camion));
+
+
         //polyline1.setTag("Ruta Matacocuite");
 
         mMap.addMarker(new MarkerOptions().
-                position(new LatLng(19.19461903427766, -96.13627391062812))
+                position(new LatLng(19.950998597968574, -96.84478038961053))
                 .title("Fin"));
 
         mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(19.13237707836943, -96.22609232873876))
+                .position(new LatLng(19.91954293785951, -96.8667806490291))
                 .title("Inicio")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
         LatLngBounds ruta = new LatLngBounds(
-                new LatLng(19.13237707836943, -96.22609232873876),
-                new LatLng(19.19461903427766, -96.13627391062812)
+                new LatLng(19.91954293785951, -96.8667806490291),
+                new LatLng(19.950998597968574, -96.84478038961053)
         );
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(ruta,500,500,10));
@@ -127,63 +158,237 @@ public class MapsActivity extends Fragment
 
         ArrayList<LatLng> puntos = new ArrayList<>();
 
-        puntos.add(new LatLng(19.19461903427766, -96.13627391062812));//Parada Parque Zamora
-        puntos.add(new LatLng(19.193775642743024, -96.13531217988783)); //Inicio Diaz Miron
-        puntos.add(new LatLng(19.18604589730039, -96.13530018711339)); //Diaz Miron Esq. Iturbide
-        puntos.add(new LatLng(19.179069499939672, -96.13500803002144)); //Diaz Miron Esq. Xalapa
-        puntos.add(new LatLng(19.170053490675798, -96.13408882641768)); //Diaz Miron, Casi Tecnica
-        puntos.add(new LatLng(19.164362996643195, -96.13320183329016)); //Diaz Miron Esq Reino Magico
-        puntos.add(new LatLng(19.16297212795448, -96.13170369922472));//Diaz Miron Esq La Fragua
-        puntos.add(new LatLng(19.155398370317798, -96.13068735028367)); //Diaz Miron Esq IMSS
-        puntos.add(new LatLng(19.153351452200273, -96.13004448909456)); //Diaz Miron CFE
-        puntos.add(new LatLng(19.151776145280998, -96.13005166916092)); //Diaz Miron Pemex
-        puntos.add(new LatLng(19.14833781261501, -96.12911048937377));//Diaz Miron Bajando Puente
-        puntos.add(new LatLng(19.146226079176557, -96.12937105734713)); //Diaz Miron Puente
-        puntos.add(new LatLng(19.145780987427475, -96.12964986058783)); //Diaz Miron Puente 2
-        puntos.add(new LatLng(19.145556938699382, -96.12987643705988)); //Diaz Miron Puente 3
-        puntos.add(new LatLng(19.145500298377094, -96.1310289362719));//Home Depot
-        puntos.add(new LatLng(19.144682158220224, -96.13312075565096)); //Ejercito Caño
-        puntos.add(new LatLng(19.144418921224247, -96.13520036427619)); //Ejercito Cadillac
-        puntos.add(new LatLng(19.141703145678893, -96.13787798008612)); //Ejercito Gasolinera
-        puntos.add(new LatLng(19.141299655214024, -96.13868290753818)); //Ejercito Bodega Aur
-        puntos.add(new LatLng(19.13990294983544, -96.14894983932474));//Federal bajo puente
-        puntos.add(new LatLng(19.139887034476008, -96.14979879949844)); //Federal frente a policia
-        puntos.add(new LatLng(19.149954824962197, -96.17400103559876)); //Federal Puente JB Lobos
-        puntos.add(new LatLng(19.164527765715363, -96.21274893244686)); //Federal Progreso
-        puntos.add(new LatLng(19.163464272719448, -96.21325082462064)); //Calle 8 Esq Av N 1
-        puntos.add(new LatLng(19.162220385624675, -96.21035639302839)); //Av N 1 Esq Tamesis
-        puntos.add(new LatLng(19.160275676046247, -96.21125012188728)); //Tamesis Esq Av N4
-        puntos.add(new LatLng(19.16158217584853, -96.21415905903427));//Calle 8 Esq Av N 4
-        puntos.add(new LatLng(19.164570150736726, -96.2192867718859));//Av N 4 Esq Calle 3
-        puntos.add(new LatLng(19.161985427471436, -96.22149646274005)); //Calle 3 Esq Av N 8
-        puntos.add(new LatLng(19.16041727017686, -96.21766098897767));//Av N 8 Esq Blvb de los Lirios
-        puntos.add(new LatLng(19.160127153666743, -96.21776846928007)); //Blvb Lirios P1
-        puntos.add(new LatLng(19.15947943184025, -96.21826217701908));//Blvb Lirios P2
-        puntos.add(new LatLng(19.158468980710808, -96.21807017956503)); //Blvb Lirios P3
-        puntos.add(new LatLng(19.158027959454103, -96.21816493990697)); //Blvb Lirios P4
-        puntos.add(new LatLng(19.157475399833096, -96.21850359821408)); //Blvb Lirios P5
-        puntos.add(new LatLng(19.157180405197614, -96.218332793675));  //Blvb Lirios Esq San Geronimo
-        puntos.add(new LatLng(19.156845643481766, -96.2172036198914));//San Geronimo Esq Jose Rivero
-        puntos.add(new LatLng(19.155325593492588, -96.21770125820427)); //Jose Rivero Esq San Pedro
-        puntos.add(new LatLng(19.15472455848812, -96.21555355324762));//San Pedro Esq San Mateo
-        puntos.add(new LatLng(19.15090012323203, -96.21682543788457));//San Mateo Esq Valente Diaz
-        puntos.add(new LatLng(19.150680648597397, -96.21735840716296)); //Valente Curva
-        puntos.add(new LatLng(19.150164562158682, -96.21761543212308)); //Valente - Mata Cocuite
-        puntos.add(new LatLng(19.146206096626056, -96.21683599622091)); //Valente - Mata Cocuite Bodega Cafe
-        puntos.add(new LatLng(19.13164431160751, -96.21565790682253));//Valente - Matacocuite Curva Camiones
-        puntos.add(new LatLng(19.131221572838292, -96.21542131309481)); //Taller Camiones
-        puntos.add(new LatLng(19.13090630528217, -96.21438129016255));//Autolavado
-        puntos.add(new LatLng(19.13074341680442, -96.21428674262054));//Autolavado Curva
-        puntos.add(new LatLng(19.127487870009364, -96.21492565495231)); //Campo
-        puntos.add(new LatLng(19.12803436222983, -96.21711058088087));//Entrada
-        puntos.add(new LatLng(19.128008910821393, -96.2172991519837));//Entrada Y
-        puntos.add(new LatLng(19.12782711493077, -96.21755314572003));//Av Gaviota Esq Calle Ruisenor
-        puntos.add(new LatLng(19.127438501696144, -96.2197344933304));//Av Gaviota Esq Calle Mirlo
-        puntos.add(new LatLng(19.127107505828413, -96.22227443585841)); //Av Gaviota Esq Calle Papagayo
-        puntos.add(new LatLng(19.127141932551673, -96.22257572173189)); //Av Gaviota Esq Calle Garza
-        puntos.add(new LatLng(19.127442441678976, -96.22333715908975)); //Av Gaviota Esq Correcaminos
-        puntos.add(new LatLng(19.132030309148597, -96.22452377514395)); //Calle Correcaminos Esq Calle Anabe
-        puntos.add(new LatLng(19.13237707836943, -96.22609232873876)); //Terminal
+        puntos.add(new LatLng(19.91954293785951, -96.8667806490291));
+        puntos.add(new LatLng(19.91973120965887, -96.86620194388682));
+        puntos.add(new LatLng(19.920155378699953, -96.86530608694218));
+        puntos.add(new LatLng(19.920312244394616, -96.86466093902305));
+        puntos.add(new LatLng(19.920382833906444, -96.86381279197722));
+        puntos.add(new LatLng(19.920547542645192, -96.86344016343183));
+        puntos.add(new LatLng(19.920866501927378, -96.86308143894452));
+        puntos.add(new LatLng(19.921261259522634, -96.86273479160943));
+        puntos.add(new LatLng(19.922097470974837, -96.86244005698806));
+        puntos.add(new LatLng(19.922259563527533, -96.86225652352942));
+        puntos.add(new LatLng(19.921254287066972, -96.8592136207038 ));
+        //seguro
+        puntos.add(new LatLng(19.922839198330244, -96.85860929512927));
+        puntos.add(new LatLng(19.9244808977876, -96.85803744258286));
+        //Cabeza Benito
+        puntos.add(new LatLng(19.924619787483305, -96.85800699386904));
+        puntos.add(new LatLng(19.924666437430066, -96.85801601571016));
+        puntos.add(new LatLng(19.92473323165029, -96.85796188466313));
+        //Justa Garcia Esq Venustian Carranza
+        puntos.add(new LatLng(19.92382031865323, -96.85555965436501));
+        //Venustiano Carranza Esq Xalapa
+        puntos.add(new LatLng(19.923459424514558, -96.85454510215185));
+        //Carranza Esq Comonfort
+        puntos.add(new LatLng(19.925280474584643, -96.85457778842867));
+        //Comonfort Esq Xalapa
+        puntos.add(new LatLng(19.925640599718566, -96.85460110487982));
+        // Comonfort Esq Reforma
+        puntos.add(new LatLng(19.92655500070444, -96.8546177594937));
+        //Comonfort Esq Elektra
+        puntos.add(new LatLng(19.92728897783141, -96.85465279490779));
+        //Comonfort Esq Similares
+        puntos.add(new LatLng(19.927993560743047, -96.85466278767551));
+        //Comonfort Esq Alatriste
+        puntos.add(new LatLng(19.92795911454039, -96.8549858871656));
+        //Alatriste Esq Melchor Ocampo
+        puntos.add(new LatLng(19.928563593333823, -96.85499223953585));
+        //Melchor Ocampo
+        puntos.add(new LatLng(19.92880149358524, -96.85496443143518));
+        //Melchor Ocampo
+        puntos.add(new LatLng(19.929491663704848, -96.85483929498612));
+        //Melchor Esq Bojalil
+        puntos.add(new LatLng(19.92962524780315, -96.8542217545049));
+        //Bojalil Esq Benito Juarez
+        puntos.add(new LatLng(19.92970639166942, -96.85358117063208));
+        //Bojalil Esq Faco I Madero
+        puntos.add(new LatLng(19.930287948788095, -96.85301196326));
+        //Francisco esq Ferrer Guardia
+        puntos.add(new LatLng(19.930996634309828, -96.85224120329302));
+        //Francisco Esq Santos Degollado
+        puntos.add(new LatLng(19.931416477869774, -96.85188515799305));
+        //Francisco Esq Bocanegra
+        puntos.add(new LatLng(19.9315427316093, -96.85183176237912));
+        //Francisco Casa de la Cultura
+        puntos.add(new LatLng(19.932981011157413, -96.85135176654198));
+        //Francisco Esq Alfoso Arroyo
+        puntos.add(new LatLng(19.933072738974086, -96.85129366375192));
+        //Francisco Esq Alfoso Arroyo
+        puntos.add(new LatLng(19.93511670979447, -96.85062418793231));
+        //Av Manuel Avila Esq Rosendo Alvarez
+        puntos.add(new LatLng(19.936218824254844, -96.85025930668279));
+        //Manuel Avila Esq Unca Tejeda
+        puntos.add(new LatLng(19.93676442987442, -96.8501316214066));
+        //Manuel Avila Templo
+        puntos.add(new LatLng(19.937447525436195, -96.8500898335031));
+        //Manuel Despues de Carolino Anaya
+        puntos.add(new LatLng(19.93799312680376, -96.85017573086475));
+        //Manuel Esq Socrates
+        puntos.add(new LatLng(19.93825283239737, -96.85027091442444));
+        //Manuel Esq Del Pocito
+        puntos.add(new LatLng(19.938797565932184, -96.85060502498808));
+        //Manuel Lab del Angel
+        puntos.add(new LatLng(19.939170754276425, -96.85094629287744));
+        //Manuel Esq Manuela
+        puntos.add(new LatLng(19.939851400241537, -96.8516868277463));
+        //Manuel Esq Mat. Enriques
+        puntos.add(new LatLng(19.94077449310811, -96.85273870658165));
+        //Manuel Esq Carriles
+        puntos.add(new LatLng(19.94275978098019, -96.85496272543185));
+        //Manuel Esq Gabriela Mitral
+        puntos.add(new LatLng(19.94381418436043, -96.8537296102019));
+        //Gabriela Esq Isabela Catolica
+        puntos.add(new LatLng(19.944793082530996, -96.85258850995484));
+        //Gabriela Tecnica
+        puntos.add(new LatLng(19.945967002219913, -96.85120402818755));
+        //Gabriela Esq Miguel Hidalgo
+        puntos.add(new LatLng(19.94669835353429, -96.85036216750035));
+        //Gabriela Esq Carlos Carballal
+        puntos.add(new LatLng(19.94784866420303, -96.84899794876381));
+        //Gabriela Esq Super GiOS
+        puntos.add(new LatLng(19.94940256168473, -96.84722333716583));
+        //Gabriela Monte
+        puntos.add(new LatLng(19.950250160339753, -96.84624582121279));
+        puntos.add(new LatLng(19.950400177331225, -96.84601440926227));
+        puntos.add(new LatLng(19.950834087258958, -96.84513310009034));
+        //Entrada Tec
+        puntos.add(new LatLng(19.950845432830647, -96.84479916507334));
+        //Vuelta Tec
+        puntos.add(new LatLng(19.950866233043293, -96.84473814481923));
+        puntos.add(new LatLng(19.950940609538783, -96.84472540432661));
+        puntos.add(new LatLng(19.950998597968574, -96.84478038961053));
+        //Fin
+
+        return  puntos;
+    }
+
+    private ArrayList<LatLng> get_route_pouints2(){
+
+        ArrayList<LatLng> puntos = new ArrayList<>();
+
+        puntos.add(new LatLng(19.950998597968574, -96.84478038961053));
+        puntos.add(new LatLng(19.950834087258958, -96.84513310009034));
+        //Entrada Tec
+        puntos.add(new LatLng(19.950400177331225, -96.84601440926227));
+        puntos.add(new LatLng(19.950400177331225, -96.84601440926227));
+        puntos.add(new LatLng(19.950250160339753, -96.84624582121279));
+        puntos.add(new LatLng(19.94940256168473, -96.84722333716583));
+        //Gabriela Monte
+        puntos.add(new LatLng(19.94784866420303, -96.84899794876381));
+        //Gabriela Esq Super GiOS
+        puntos.add(new LatLng(19.94669835353429, -96.85036216750035));
+        //Gabriela Esq Carlos Carballal
+        puntos.add(new LatLng(19.945967002219913, -96.85120402818755));
+        //Gabriela Esq Miguel Hidalgo
+        puntos.add(new LatLng(19.944793082530996, -96.85258850995484));
+        //Gabriela Tecnica
+        puntos.add(new LatLng(19.94381418436043, -96.8537296102019));
+        //Gabriela Esq Isabela Catolica
+        puntos.add(new LatLng(19.942701266511246, -96.85500330222682));
+        //Gabriela Esq Manuel Avila
+        puntos.add(new LatLng(19.941741106245125, -96.85395582368486));
+        //Manuel Unidad
+        puntos.add(new LatLng(19.94071858065521, -96.85279846461482));
+        //Manuel Carriles
+        puntos.add(new LatLng(19.93979421181931, -96.8517542308609));
+        //Manuel Esq Enriques
+        puntos.add(new LatLng(19.939102976729888, -96.85097975750448));
+        //Manuel Esq Manuela
+        puntos.add(new LatLng(19.938722791240192, -96.85064999960032));
+        //Manuel
+        puntos.add(new LatLng(19.93844345464908, -96.85045478502707));
+        //Manel Laboratorio del Angel
+        puntos.add(new LatLng(19.93822212203623, -96.85036364496867));
+        //Manuel Esq de los Pocitos
+        puntos.add(new LatLng(19.937975470601895, -96.85024215084623));
+        //Manuel Esq Socrates
+        puntos.add(new LatLng(19.93757909841644, -96.85017268279036));
+        puntos.add(new LatLng(19.937241208559175, -96.85016826354203));
+        //Manuel esq Carolino Anaya
+        puntos.add(new LatLng(19.936808010132857, -96.85018414251844));
+        puntos.add(new LatLng(19.936239202602117, -96.85032338427433));
+        //Manuel Esq Unca Tejeda
+        puntos.add(new LatLng(19.935151807938883, -96.85069986025093));
+        //Manuel Ganadera
+        puntos.add(new LatLng(19.934022950147156, -96.85106218527369));
+        puntos.add(new LatLng(19.93310370828819, -96.85138917698441));
+        //Manuel Esq Modatelas
+        puntos.add(new LatLng(19.932977462695185, -96.85135476802559));
+        puntos.add(new LatLng(19.932981011157413, -96.85135176654198));
+        //Francisco Esq Alfoso Arroyo
+        puntos.add(new LatLng(19.9315427316093, -96.85183176237912));
+        //Francisco Casa de la Cultura
+        puntos.add(new LatLng(19.931416477869774, -96.85188515799305));
+        //Francisco Esq Bocanegra
+        puntos.add(new LatLng(19.930996634309828, -96.85224120329302));
+        //Francisco Esq Santos Degollado
+        puntos.add(new LatLng(19.930857704688226, -96.85202678079568));
+        //Degollado esq 5 de Mayo
+        puntos.add(new LatLng(19.9299740120968, -96.8526151547144));
+        //5 de mayo esq Ferrer
+        puntos.add(new LatLng(19.929360983241175, -96.85299205090064));
+        //5 de Mayo esq Bojalil
+        puntos.add(new LatLng(19.92881221256291, -96.85329548179959));
+        //5 de Mayo esq Galvan
+        puntos.add(new LatLng(19.92887925542045, -96.85417703117808));
+        //Galvan esq Benito Juarez
+        puntos.add(new LatLng(19.928390051463857, -96.85412548963434));
+        //Benito Juarez Iglesia
+        puntos.add(new LatLng(19.928335668234183, -96.85439616272143));
+        puntos.add(new LatLng(19.928267116900702, -96.85445005837678));
+        //Taqueria Parroquia
+        puntos.add(new LatLng(19.92802873921112, -96.8544453867964));
+        puntos.add(new LatLng(19.927990657993533, -96.85464412276431));
+        //Alatriste Esq Comonfort
+        puntos.add(new LatLng(19.92794305645854, -96.85497830298587));
+        //Alatriste esq Melchor
+        puntos.add(new LatLng(19.92787522424665, -96.855656790091));
+        //alatriste Esq Pino Suarez
+        puntos.add(new LatLng(19.927287305842576, -96.85559738931666));
+        //Pino Suarez Esq Rojas
+        puntos.add(new LatLng(19.926863942321695, -96.8555495286034));
+        puntos.add(new LatLng(19.92643444194239, -96.85551036983841));
+        //Pino Suarez esq Lerdo
+        puntos.add(new LatLng(19.925139860400407, -96.85543240104147));
+        //Pino Suarez Esq Reforma
+        puntos.add(new LatLng(19.925651880738414, -96.85460113432978));
+        //Reforma Esq Comonfort
+        puntos.add(new LatLng(19.92585750374074, -96.85459238767348));
+        //Comonfort Esq Mina
+        puntos.add(new LatLng(19.92584690540791, -96.85385063980928));
+        //Mina esq Zamora
+        puntos.add(new LatLng(19.92597808047412, -96.85318343020862));
+        //Mina Esq Morelos
+        puntos.add(new LatLng(19.925646443129907, -96.8532223703684));
+        //Morelos
+        puntos.add(new LatLng(19.924644082710845, -96.85351440163043));
+        //Morelos esq LAvoignet
+        puntos.add(new LatLng(19.92326653157662, -96.85398268237932));
+        //Morelos Esq Carranza
+        puntos.add(new LatLng(19.923459424514558, -96.85454510215185));
+        //Carranza Esq Comonfort
+        puntos.add(new LatLng(19.92382031865323, -96.85555965436501));
+        //Venustiano Carranza Esq Xalapa
+        puntos.add(new LatLng(19.92473323165029, -96.85796188466313));
+        //Justa Garcia Esq Venustian Carranza
+        puntos.add(new LatLng(19.924666437430066, -96.85801601571016));
+        puntos.add(new LatLng(19.924619787483305, -96.85800699386904));
+        puntos.add(new LatLng(19.9244808977876, -96.85803744258286));
+        //Cabeza Benito
+        puntos.add(new LatLng(19.922839198330244, -96.85860929512927));
+        puntos.add(new LatLng(19.921254287066972, -96.8592136207038 ));
+        //seguro
+        puntos.add(new LatLng(19.922259563527533, -96.86225652352942));
+        puntos.add(new LatLng(19.922097470974837, -96.86244005698806));
+        puntos.add(new LatLng(19.921261259522634, -96.86273479160943));
+        puntos.add(new LatLng(19.920866501927378, -96.86308143894452));
+        puntos.add(new LatLng(19.920547542645192, -96.86344016343183));
+        puntos.add(new LatLng(19.920382833906444, -96.86381279197722));
+        puntos.add(new LatLng(19.920312244394616, -96.86466093902305));
+        puntos.add(new LatLng(19.920155378699953, -96.86530608694218));
+        puntos.add(new LatLng(19.91973120965887, -96.86620194388682));
+        puntos.add(new LatLng(19.91954293785951, -96.8667806490291));
 
         return  puntos;
     }
