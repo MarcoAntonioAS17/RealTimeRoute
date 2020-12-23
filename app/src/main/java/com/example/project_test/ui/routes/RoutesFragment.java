@@ -41,7 +41,24 @@ public class RoutesFragment extends Fragment {
         super.onResume();
         FirebaseFirestore db  = FirebaseFirestore.getInstance();
 
+        /*DocumentReference docRef = db.collection("Rutas").document("6reRcRAaGgbMlXCITMnp");
 
+        docRef
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        DetallesRutaObject ruta = documentSnapshot.toObject(DetallesRutaObject.class);
+                        Log.d("TYAM",ruta.getNombre());
+                        Log.d("TYAM",ruta.getRuta().toString());
+                        for( GeoPoint punto: ruta.getRuta()){
+                            Log.d("TYAM",punto.getLatitude()+","+punto.getLongitude());
+                        }
+                    }
+
+                });
+
+         */
         db.collection("Rutas")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
