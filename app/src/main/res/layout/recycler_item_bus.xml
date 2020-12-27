@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:elevation="10dp"
+    android:layout_gravity="center"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="10dp"
+    android:background="@color/CardViewColor"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:paddingBottom="0dp"
+        android:background="@color/CardViewColor">
+
+        <ImageView
+            android:id="@+id/rv_iv_foto"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:src="@drawable/bus_seguro_palchan"
+            />
+
+        <TextView
+            android:id="@+id/rv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="italic|bold"
+            android:textColor="@color/white"
+            android:text="Hola"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -7,6 +7,7 @@
     <color name="teal_700">#FF018786</color>
 
     <color name="main_color_blue">#1F3C88</color>
+    <color name="CardViewColor">#345ECA</color>
     <color name="orange">#EE6F57</color>
     <color name="color_clear">#F6F5F5</color>
     <color name="color_dark">#070D59</color>
