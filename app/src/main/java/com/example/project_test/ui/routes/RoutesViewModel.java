@@ -4,16 +4,23 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.Set;
+
 public class RoutesViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private MutableLiveData<String> Ruta;
 
     public RoutesViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is See Routes fragment");
+        Ruta = new MutableLiveData<>();
     }
 
     public LiveData<String> getText() {
-        return mText;
+        return Ruta;
+    }
+
+
+
+    public void setText(MutableLiveData<String> ruta) {
+        this.Ruta = ruta;
     }
 }

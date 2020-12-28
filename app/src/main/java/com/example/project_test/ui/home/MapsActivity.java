@@ -1,7 +1,10 @@
 package com.example.project_test.ui.home;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentResultListener;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +24,7 @@ import android.widget.Toast;
 import com.example.project_test.MainActivity;
 import com.example.project_test.R;
 import com.example.project_test.models.DetallesRutaObject;
+import com.example.project_test.models.RutaViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -53,6 +57,7 @@ import com.squareup.picasso.Target;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -78,15 +83,26 @@ public class MapsActivity extends Fragment
     DocumentReference docRef;
     View mView;
     private FirebaseStorage storage;
+    private final String REQUEST_KEY = "600";
+    private final String BUNBLE_KEY = "601";
+    List<LatLng> latLngIda;
+    List<LatLng> latLngVuelta;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        //setContentView(R.layout.activity_maps);
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mView = inflater.inflate(R.layout.activity_maps, container, false);
         return  mView;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        /*getParentFragmentManager().setFragmentResultListener(REQUEST_KEY, this, (requestKey, bundle) -> {
+            String result = bundle.getString(BUNBLE_KEY);
+            Log.d("TYAM","Result=>"+result);
+            readFile(result);
+        });*/
     }
 
     @Override
@@ -98,6 +114,8 @@ public class MapsActivity extends Fragment
             mapView.onResume();
             mapView.getMapAsync(this);
         }
+        //readFile("Palchan Seguro");
+
     }
 
     @Override
@@ -150,6 +168,22 @@ public class MapsActivity extends Fragment
 
         //poner_route_ida(mMap);
         //poner_route_vuelta(mMap);
+        /*if(latLngIda.size() > 0){
+            poner_flechas(googleMap,latLngIda);
+
+            googleMap.addPolyline(new PolylineOptions()
+                    .clickable(true)
+                    .color(Color.GREEN)
+                    .addAll(latLngIda));
+        }
+        if(latLngVuelta.size() > 0){
+            poner_flechas(googleMap,latLngVuelta);
+
+            googleMap.addPolyline(new PolylineOptions()
+                    .clickable(true)
+                    .color(Color.RED)
+                    .addAll(latLngVuelta));
+        }*/
 
         mMap.addMarker(new MarkerOptions().
                 position(new LatLng(19.950998597968574, -96.84478038961053))
@@ -222,7 +256,7 @@ public class MapsActivity extends Fragment
 
     }
 
-    private void poner_flechas(GoogleMap googleMap, ArrayList<LatLng> puntos){
+    private void poner_flechas(GoogleMap googleMap, List<LatLng> puntos){
         Double rotation = 0.0;
         for (int i=0; i < puntos.size()-1; i+=2){
             LatLng punto_1 = puntos.get(i);
@@ -411,4 +445,58 @@ public class MapsActivity extends Fragment
         return 0;
 
     }
+    /*
+    private void readFile(String filename) {
+
+        File file = new File(getContext().getFilesDir()+"/Rutas/"+filename+".json");
+        latLngIda = new ArrayList<>();
+        latLngVuelta = new ArrayList<>();
+
+        if (file.exists()) {
+
+            StringBuilder text = new StringBuilder();
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(file));
+                String line;
+                while ((line = br.readLine()) != null) {
+                    text.append(line);
+                    text.append("\n");
+                }
+                br.close();
+            } catch (IOException e) {
+            }
+            try {
+                JSONObject obj = new JSONObject(text.toString());
+                String puntos = obj.getString("Ruta_Ida")
+                        .replace("}]","")
+                        .replace("[","}, ")
+                        .replace("}","")
+                        .replace("{","");
+                String [] coorde = puntos.split(", GeoPoint  latitude=",-2);
+                for (String elem: coorde){
+                    if(elem.length() >5){
+                        String [] coord = elem.split(", longitude=");
+                        LatLng latLng = new LatLng(Double.parseDouble(coord[0]),Double.parseDouble(coord[1]));
+                        latLngIda.add(latLng);
+                    }
+                }
+                puntos = obj.getString("Ruta_Vuelta")
+                        .replace("}]","")
+                        .replace("[","}, ")
+                        .replace("}","")
+                        .replace("{","");
+                coorde = puntos.split(", GeoPoint  latitude=",-2);
+                for (String elem: coorde){
+                    if(elem.length() >5){
+                        String [] coord = elem.split(", longitude=");
+                        LatLng latLng = new LatLng(Double.parseDouble(coord[0]),Double.parseDouble(coord[1]));
+                        latLngVuelta.add(latLng);
+                    }
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }*/
 }

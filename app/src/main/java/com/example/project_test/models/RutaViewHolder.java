@@ -12,16 +12,22 @@ import com.example.project_test.R;
 
 import java.util.List;
 
-public class RutaViewHolder extends RecyclerView.ViewHolder {
+public class RutaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     ImageView mImage;
     TextView mTitle;
+    OnBusListener onBusListener;
 
-    public RutaViewHolder(@NonNull View itemView) {
+    public RutaViewHolder(@NonNull View itemView, OnBusListener onBusListener) {
         super(itemView);
 
         mImage = itemView.findViewById(R.id.rv_iv_foto);
         mTitle = itemView.findViewById(R.id.rv_title);
+        this.onBusListener = onBusListener;
+        itemView.setOnClickListener(this);
     }
 
-
+    @Override
+    public void onClick(View v) {
+        onBusListener.onBusClick(getAdapterPosition());
+    }
 }

@@ -19,17 +19,19 @@ import java.util.List;
 public class RutaAdapter extends RecyclerView.Adapter<RutaViewHolder> {
     private Context context;
     private List<RutaViewModel> RutaList;
+    private OnBusListener onBusListener;
 
-    public RutaAdapter(Context mContext, List<RutaViewModel> rList){
+    public RutaAdapter(Context mContext, List<RutaViewModel> rList, OnBusListener onBusListener){
         this.context = mContext;
         this.RutaList = rList;
+        this.onBusListener = onBusListener;
     }
 
     @NonNull
     @Override
     public RutaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View mView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item_bus,parent,false);
-        return new RutaViewHolder(mView);
+        return new RutaViewHolder(mView, onBusListener);
     }
 
     @Override
@@ -42,4 +44,6 @@ public class RutaAdapter extends RecyclerView.Adapter<RutaViewHolder> {
     public int getItemCount() {
         return RutaList.size();
     }
+
+
 }
