@@ -1,38 +1,23 @@
 package com.example.project_test.ui.routes;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_test.MainActivity;
 import com.example.project_test.R;
-import com.example.project_test.models.DetallesRutaObject;
 import com.example.project_test.models.OnBusListener;
 import com.example.project_test.models.RutaAdapter;
 import com.example.project_test.models.RutaViewModel;
-import com.example.project_test.ui.home.MapsActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,21 +29,27 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoutesFragment extends Fragment implements OnBusListener{
+public class RoutesFragment extends Fragment{
 
-    private RoutesViewModel routesViewModel;
     RecyclerView recyclerView;
     List<RutaViewModel> ListRutas;
+    private OnBusListener listener;
 
-    private final String REQUEST_KEY = "600";
-    private final String BUNBLE_KEY = "601";
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (!(context instanceof OnBusListener)) {
+            throw new ClassCastException ("Activity must implement OnPlanetSelectedListener interface");
+        } else {
+            listener = (OnBusListener) context;
+        }
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_see_routes, container, false);
-
-
         return root;
     }
 
@@ -66,10 +57,10 @@ public class RoutesFragment extends Fragment implements OnBusListener{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        routesViewModel =
-                new ViewModelProvider(this).get(RoutesViewModel.class);
-
         ((MainActivity) getActivity()).hideFloatingActionButton();
+
+        Activity activity = getActivity ();
+        if (activity == null) return;
 
         recyclerView = view.findViewById(R.id.rv_rutas);
         GridLayoutManager mGridLayoutManager = new GridLayoutManager(view.getContext(),2);
@@ -78,7 +69,8 @@ public class RoutesFragment extends Fragment implements OnBusListener{
         ListRutas = new ArrayList<>();
         readFile();
 
-        RutaAdapter myAdapter = new RutaAdapter(getContext(),ListRutas,this);
+        RutaAdapter myAdapter = new RutaAdapter(activity,ListRutas);
+        myAdapter.setOnBusListenert(listener);
         recyclerView.setAdapter(myAdapter);
 
     }
@@ -117,39 +109,6 @@ public class RoutesFragment extends Fragment implements OnBusListener{
             }
         }
 
-    }
-
-    @Override
-    public void onBusClick(int position) {
-        Log.d("TYAM","Item Selected=>"+ListRutas.get(position).getNombre());
-
-        routesViewModel.getText().observe(getViewLifecycleOwner(),
-                new Observer<String>() {
-                    @Override
-                    public void onChanged(String s) {
-
-                    }
-                });
-
-        Bundle result = new Bundle();
-        result.putString(BUNBLE_KEY, ListRutas.get(position).getNombre());
-
-        getParentFragmentManager().setFragmentResult(REQUEST_KEY,result);
-
-        /*
-        FragmentManager fragmentManager = new FragmentManager() {};
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        fragmentTransaction.setReorderingAllowed(true);
-        fragmentTransaction.replace(R.id.nav_host_fragment, MapaRutas.class, null);
-        fragmentTransaction.commit();
-        */
-
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .replace(R.id.nav_host_fragment,MapaRutas.class,null)
-                .addToBackStack("Rutas")
-                .commit();
     }
 
 

@@ -13,4 +13,6 @@
     <string name="menu_report_problem">Reportar un problema</string>
     <string name="menu_configuration">Configuración</string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="update_button">Actualizar Datos</string>
 </resources>

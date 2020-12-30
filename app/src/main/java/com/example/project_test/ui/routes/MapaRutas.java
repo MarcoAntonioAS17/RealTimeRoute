@@ -1,5 +1,6 @@
 package com.example.project_test.ui.routes;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,20 +40,27 @@ public class MapaRutas extends Fragment
         OnMapReadyCallback,
         GoogleMap.OnPolylineClickListener {
 
-    private RoutesViewModel routesViewModel;
     private GoogleMap mMap;
     private MapView mapView;
     View mView;
-    private final String REQUEST_KEY = "600";
-    private final String BUNBLE_KEY = "601";
+    private static final String RUTA_ID = "Ruta";
     List<LatLng> latLngIda;
     List<LatLng> latLngVuelta;
+
+    public static MapaRutas instance (String ruta){
+        MapaRutas mapaRutas = new MapaRutas();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(RUTA_ID,ruta);
+
+        mapaRutas.setArguments(bundle);
+        return mapaRutas;
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.activity_maps, container, false);
-        Log.w("TYAM","Mapa rutas onCreateView");
         return  mView;
     }
 
@@ -60,14 +68,8 @@ public class MapaRutas extends Fragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getParentFragmentManager().setFragmentResultListener(REQUEST_KEY, this, (requestKey, bundle) -> {
-
-            String result = bundle.getString(BUNBLE_KEY);
-            Log.d("TYAM","Result=>"+result);
-            readFile(result);
-        });
-
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -78,14 +80,17 @@ public class MapaRutas extends Fragment
             mapView.onResume();
             mapView.getMapAsync(this);
         }
+        Activity activity = getActivity ();
+        if (activity == null) return;
+
+        Bundle bundle = getArguments ();
+        if (bundle == null) return;
+
+        String ruta =  bundle.getString(RUTA_ID);
+        readFile(ruta);
         Log.w("TYAM","Mapa rutas onViewCreated");
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-    }
 
     @Override
     public void onPolylineClick(Polyline polyline) {
@@ -113,20 +118,19 @@ public class MapaRutas extends Fragment
         }
 
         mMap.addMarker(new MarkerOptions().
-                position(new LatLng(19.950998597968574, -96.84478038961053))
+                position(latLngVuelta.get(0))
                 .title("Fin"));
 
         mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(19.91954293785951, -96.8667806490291))
+                .position(latLngIda.get(0))
                 .title("Inicio")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
         LatLngBounds ruta = new LatLngBounds(
-                new LatLng(19.91954293785951, -96.8667806490291),
-                new LatLng(19.950998597968574, -96.84478038961053)
+                latLngIda.get(0), latLngVuelta.get(0)
         );
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(ruta,500,500,10));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(ruta,1000,1000,10));
     }
 
     private void readFile(String filename) {
