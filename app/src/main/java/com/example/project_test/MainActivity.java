@@ -14,6 +14,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.project_test.models.OnBusListener;
 import com.example.project_test.ui.routes.MapaRutas;
+import com.example.project_test.ui.routes.RoutesFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements OnBusListener {
     private AppBarConfiguration mAppBarConfiguration;
     FloatingActionButton fab_gps;
     FloatingActionButton fab_go;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements OnBusListener {
         );
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements OnBusListener {
                 .build();
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
     }
@@ -70,6 +73,10 @@ public class MainActivity extends AppCompatActivity implements OnBusListener {
 
     @Override
     public boolean onSupportNavigateUp() {
+
+        FragmentManager manager = getSupportFragmentManager();
+        manager.popBackStack();
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
@@ -78,7 +85,10 @@ public class MainActivity extends AppCompatActivity implements OnBusListener {
     @Override
     public void onBackPressed() {
         super.onBackPressed ();
-        getSupportFragmentManager().popBackStack ("PERLA", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        FragmentManager manager = getSupportFragmentManager();
+        manager.popBackStackImmediate();
+
     }
 
 
@@ -88,11 +98,11 @@ public class MainActivity extends AppCompatActivity implements OnBusListener {
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction ();
-        transaction.addToBackStack ("PERLA");
+//        transaction.addToBackStack ("Frag");
 
         transaction.replace(R.id.nav_host_fragment, mapaRutas);
 
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        //transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         transaction.commit();
     }
 }

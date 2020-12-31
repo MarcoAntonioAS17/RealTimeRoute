@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.project_test.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -61,15 +62,39 @@ public class MapaRutas extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.activity_maps, container, false);
+        Log.d("TYAM","onCreateView");
         return  mView;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d("TYAM","onCreate");
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("TYAM","onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("TYAM","onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("TYAM","onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("TYAM","onDestroy");
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -189,7 +214,7 @@ public class MapaRutas extends Fragment
 
     private void poner_flechas(GoogleMap googleMap, List<LatLng> puntos){
         Double rotation = 0.0;
-        for (int i=0; i < puntos.size()-1; i+=2){
+        for (int i=0; i < puntos.size()-1; i+=3){
             LatLng punto_1 = puntos.get(i);
             LatLng punto_2 = puntos.get(i+1);
 
