@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements OnBusListener {
     FloatingActionButton fab_gps;
     FloatingActionButton fab_go;
     NavigationView navigationView;
+    NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements OnBusListener {
                 .setDrawerLayout(drawer)
                 .build();
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
@@ -74,8 +75,6 @@ public class MainActivity extends AppCompatActivity implements OnBusListener {
     @Override
     public boolean onSupportNavigateUp() {
 
-        FragmentManager manager = getSupportFragmentManager();
-        manager.popBackStack();
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
@@ -83,26 +82,12 @@ public class MainActivity extends AppCompatActivity implements OnBusListener {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed ();
-
-        FragmentManager manager = getSupportFragmentManager();
-        manager.popBackStackImmediate();
-
-    }
-
-
-    @Override
     public void onBusClick(String ruta) {
-        MapaRutas mapaRutas = MapaRutas.instance(ruta);
+        //navController.navigate(R.id.mapa_rutas);
 
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction ();
-//        transaction.addToBackStack ("Frag");
+        Bundle bundle = new Bundle();
+        bundle.putString("Ruta",ruta);
+        navController.navigate(R.id.mapa_rutas,bundle);
 
-        transaction.replace(R.id.nav_host_fragment, mapaRutas);
-
-        //transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        transaction.commit();
     }
 }

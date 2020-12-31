@@ -15,7 +15,11 @@
         android:id="@+id/nav_routes"
         android:name="com.example.project_test.ui.routes.RoutesFragment"
         android:label="@string/menu_routes"
-        tools:layout="@layout/fragment_see_routes" />
+        tools:layout="@layout/fragment_see_routes" >
+        <action
+            android:id="@+id/action_nav_routes_to_mapa_rutas"
+            app:destination="@id/mapa_rutas" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_real_time_routes"
@@ -33,5 +37,15 @@
         android:id="@+id/nav_config"
         android:name="com.example.project_test.ui.Configuration.ConfigFragment"
         android:label="@string/menu_configuration"/>
+
+    <fragment
+        android:id="@+id/mapa_rutas"
+        android:name="com.example.project_test.ui.routes.MapaRutas"
+        android:label="@string/menu_routes">
+        <argument
+            android:name="Ruta"
+            app:argType="string" />
+    </fragment>
+
 
 </navigation>

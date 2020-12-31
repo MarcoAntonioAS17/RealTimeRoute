@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.project_test.MainActivity;
 import com.example.project_test.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -48,72 +49,34 @@ public class MapaRutas extends Fragment
     List<LatLng> latLngIda;
     List<LatLng> latLngVuelta;
 
-    public static MapaRutas instance (String ruta){
-        MapaRutas mapaRutas = new MapaRutas();
-
-        Bundle bundle = new Bundle();
-        bundle.putString(RUTA_ID,ruta);
-
-        mapaRutas.setArguments(bundle);
-        return mapaRutas;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.activity_maps, container, false);
         Log.d("TYAM","onCreateView");
+        mView.setLabelFor(R.id.mapa_rutas);
         return  mView;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d("TYAM","onCreate");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("TYAM","onResume");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d("TYAM","onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d("TYAM","onStop");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d("TYAM","onDestroy");
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
         mapView = (MapView) mView.findViewById(R.id.map);
         if(mapView !=null){
             mapView.onCreate(null);
             mapView.onResume();
             mapView.getMapAsync(this);
         }
-        Activity activity = getActivity ();
-        if (activity == null) return;
-
+        Log.w("TYAM","Mapa rutas onViewCreated");
         Bundle bundle = getArguments ();
         if (bundle == null) return;
-
         String ruta =  bundle.getString(RUTA_ID);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(ruta);
+        Log.d("TYAM","Ruta=>"+ruta);
         readFile(ruta);
-        Log.w("TYAM","Mapa rutas onViewCreated");
+
     }
 
 
@@ -125,13 +88,15 @@ public class MapaRutas extends Fragment
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        if(latLngIda != null){
+        if(latLngIda != null ){
             poner_flechas(googleMap,latLngIda);
 
             googleMap.addPolyline(new PolylineOptions()
                     .clickable(true)
                     .color(Color.GREEN)
                     .addAll(latLngIda));
+
+
         }
         if(latLngVuelta !=null){
             poner_flechas(googleMap,latLngVuelta);
