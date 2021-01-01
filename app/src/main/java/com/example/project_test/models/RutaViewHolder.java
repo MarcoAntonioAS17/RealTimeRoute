@@ -13,8 +13,8 @@ import com.example.project_test.R;
 import java.util.List;
 
 public class RutaViewHolder extends RecyclerView.ViewHolder {
-    ImageView mImage;
-    TextView mTitle;
+    public ImageView mImage;
+    public TextView mTitle;
 
     public RutaViewHolder(@NonNull View itemView) {
         super(itemView);

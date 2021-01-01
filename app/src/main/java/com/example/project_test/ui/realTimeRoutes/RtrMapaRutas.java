@@ -1,6 +1,5 @@
-package com.example.project_test.ui.routes;
+package com.example.project_test.ui.realTimeRoutes;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +10,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.project_test.MainActivity;
 import com.example.project_test.R;
@@ -37,7 +35,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapaRutas extends Fragment
+public class RtrMapaRutas extends Fragment
         implements
         OnMapReadyCallback,
         GoogleMap.OnPolylineClickListener {
@@ -54,7 +52,7 @@ public class MapaRutas extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.activity_mapa_rutas, container, false);
         Log.d("TYAM","onCreateView");
-        mView.setLabelFor(R.id.mapa_rutas);
+        mView.setLabelFor(R.id.mapa_rtr_rutas);
         return  mView;
     }
 
@@ -73,7 +71,7 @@ public class MapaRutas extends Fragment
         Bundle bundle = getArguments ();
         if (bundle == null) return;
         String ruta =  bundle.getString(RUTA_ID);
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(ruta);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("RTR: "+ruta);
         Log.d("TYAM","Ruta=>"+ruta);
         readFile(ruta);
 
@@ -95,7 +93,6 @@ public class MapaRutas extends Fragment
                     .clickable(true)
                     .color(Color.GREEN)
                     .addAll(latLngIda));
-
 
         }
         if(latLngVuelta !=null){

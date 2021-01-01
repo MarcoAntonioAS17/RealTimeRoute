@@ -2,25 +2,20 @@ package com.example.project_test;
 
 import android.os.Bundle;
 
-import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.project_test.models.OnBusListener;
-import com.example.project_test.ui.routes.MapaRutas;
-import com.example.project_test.ui.routes.RoutesFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 
-public class MainActivity extends AppCompatActivity implements OnBusListener {
+public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     FloatingActionButton fab_gps;
@@ -81,13 +76,4 @@ public class MainActivity extends AppCompatActivity implements OnBusListener {
                 || super.onSupportNavigateUp();
     }
 
-    @Override
-    public void onBusClick(String ruta) {
-        //navController.navigate(R.id.mapa_rutas);
-
-        Bundle bundle = new Bundle();
-        bundle.putString("Ruta",ruta);
-        navController.navigate(R.id.mapa_rutas,bundle);
-
-    }
 }

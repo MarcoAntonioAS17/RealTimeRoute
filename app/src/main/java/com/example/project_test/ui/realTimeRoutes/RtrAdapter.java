@@ -1,30 +1,30 @@
-package com.example.project_test.models;
+package com.example.project_test.ui.realTimeRoutes;
 
-import android.content.Context;
+import android.app.Activity;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_test.R;
+import com.example.project_test.models.RutaViewHolder;
+import com.example.project_test.models.RutaViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class RutaAdapter extends RecyclerView.Adapter<RutaViewHolder> {
-    private Context context;
+public class RtrAdapter extends RecyclerView.Adapter<RutaViewHolder> {
+
     private List<RutaViewModel> RutaList;
-    private OnBusListener onBusListener;
+    private Activity activity;
 
-    public RutaAdapter(Context mContext, List<RutaViewModel> rList){
-        this.context = mContext;
+    public RtrAdapter(List<RutaViewModel> rList, Activity activity){
         this.RutaList = rList;
-    }
-
-    public void setOnBusListenert(OnBusListener listener){
-        this.onBusListener = listener;
+        this.activity = activity;
     }
 
     @NonNull
@@ -40,9 +40,10 @@ public class RutaAdapter extends RecyclerView.Adapter<RutaViewHolder> {
         holder.mTitle.setText(RutaList.get(position).getNombre());
 
         holder.itemView.setOnClickListener(view ->{
-            if(this.onBusListener != null){
-                this.onBusListener.onBusClick(RutaList.get(position).getNombre());
-            }
+            Bundle bundle = new Bundle();
+            bundle.putString("Ruta",RutaList.get(position).getNombre());
+
+            Navigation.findNavController(activity,R.id.nav_host_fragment).navigate(R.id.mapa_rtr_rutas,bundle);
         } );
     }
 
@@ -53,3 +54,4 @@ public class RutaAdapter extends RecyclerView.Adapter<RutaViewHolder> {
 
 
 }
+

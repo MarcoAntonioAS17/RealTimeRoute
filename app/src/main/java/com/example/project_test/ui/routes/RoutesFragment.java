@@ -1,7 +1,6 @@
 package com.example.project_test.ui.routes;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_test.MainActivity;
 import com.example.project_test.R;
-import com.example.project_test.models.OnBusListener;
-import com.example.project_test.models.RutaAdapter;
 import com.example.project_test.models.RutaViewModel;
 
 import org.json.JSONException;
@@ -33,18 +30,6 @@ public class RoutesFragment extends Fragment{
 
     RecyclerView recyclerView;
     List<RutaViewModel> ListRutas;
-    private OnBusListener listener;
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        if (!(context instanceof OnBusListener)) {
-            throw new ClassCastException ("Activity must implement OnPlanetSelectedListener interface");
-        } else {
-            listener = (OnBusListener) context;
-        }
-    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -69,8 +54,7 @@ public class RoutesFragment extends Fragment{
         ListRutas = new ArrayList<>();
         readFile();
 
-        RutaAdapter myAdapter = new RutaAdapter(activity,ListRutas);
-        myAdapter.setOnBusListenert(listener);
+        RutaAdapter myAdapter = new RutaAdapter(ListRutas,activity);
         recyclerView.setAdapter(myAdapter);
 
     }
