@@ -18,8 +18,6 @@ import com.google.android.material.snackbar.Snackbar;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    FloatingActionButton fab_gps;
-    FloatingActionButton fab_go;
     NavigationView navigationView;
     NavController navController;
 
@@ -29,18 +27,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        fab_gps = findViewById(R.id.fab_gps);
-        fab_gps.setOnClickListener(view ->
-                Snackbar.make(view,"GO Float Action Button", Snackbar.LENGTH_LONG)
-                        .setAction("Action",null).show()
-        );
-
-        fab_go = findViewById(R.id.fab_go);
-        fab_go.setOnClickListener(view ->
-                Snackbar.make(view,"GO Float Action Button", Snackbar.LENGTH_LONG)
-                .setAction("Action",null).show()
-        );
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -55,16 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-    }
-
-    public void hideFloatingActionButton(){
-        fab_gps.hide();
-        fab_go.hide();
-    }
-
-    public void showFloatingActionButton(){
-        fab_gps.show();
-        fab_go.show();
     }
 
     @Override

@@ -12,7 +12,46 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <!--this attribute is to change the theme of the extended FAB-->
+        <item name="extendedFloatingActionButtonStyle">
+            @style/Widget.App.ExtendedFloatingActionButton2</item>
+
     </style>
+
+    <style name="Widget.App.ExtendedFloatingActionButton" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
+
+        <item name="materialThemeOverlay">@style/myCustomThemeForExtendedFab</item>
+        <item name="shapeAppearanceOverlay">@style/customExtendedFAB</item>
+
+    </style>
+
+    <style name="Widget.App.ExtendedFloatingActionButton2" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
+
+        <item name="materialThemeOverlay">@style/myCustomThemeForExtendedFab</item>
+        <item name="shapeAppearanceOverlay">@style/customExtendedFAB2</item>
+
+    </style>
+
+    <style name="myCustomThemeForExtendedFab" parent="">
+
+        <item name="colorOnSecondary">@android:color/white</item>
+
+    </style>
+
+    <style name="customExtendedFAB">
+
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">0dp</item>
+
+    </style>
+
+    <style name="customExtendedFAB2">
+
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10dp</item>
+
+    </style>
+    <!--Changing the theme of the extended FAB completes here-->
 
     <style name="Theme.Project_test.NoActionBar">
         <item name="windowActionBar">false</item>

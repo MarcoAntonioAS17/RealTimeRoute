@@ -70,7 +70,7 @@ public class ConfigFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainActivity) getActivity()).hideFloatingActionButton();
+        //((MainActivity) getActivity()).hideFloatingActionButton();
     }
 
     private void obtener_datos() {

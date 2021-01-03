@@ -15,4 +15,6 @@
     <string name="title_activity_maps">Map</string>
 
     <string name="update_button">Actualizar Datos</string>
+    <string name="fab_ida">IDA</string>
+    <string name="fab_regreso">REGRESO</string>
 </resources>
