@@ -50,7 +50,7 @@ public class RtrMapaRutas extends Fragment
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.activity_mapa_rutas, container, false);
+        mView = inflater.inflate(R.layout.activity_mapa_rtr_rutas, container, false);
         Log.d("TYAM","onCreateView");
         mView.setLabelFor(R.id.mapa_rtr_rutas);
         return  mView;

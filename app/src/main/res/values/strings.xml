@@ -17,4 +17,14 @@
     <string name="update_button">Actualizar Datos</string>
     <string name="fab_ida">IDA</string>
     <string name="fab_regreso">REGRESO</string>
+
+    <string name="config_Nombre">Nombre</string>
+    <string name="config_nombre_hint">Ingresa tu nombre</string>
+    <string name="config_Contacto">Contacto</string>
+    <string name="config_contacto_hint">Ingresa tu correo electrónico</string>
+    <string name="config_problema">Problema</string>
+    <string name="config_problema_hint">Detalles del problema o ruta incorrecta</string>
+    <string name="config_mensaje">Los datos proporcionados son para fines de calidad y no se compartirán con ninguna empresa de terceros</string>
+    <string name="config_enviar">Enviar</string>
+
 </resources>
