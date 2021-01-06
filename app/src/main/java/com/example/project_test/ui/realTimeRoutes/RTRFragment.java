@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,11 +34,13 @@ public class RTRFragment extends Fragment {
 
     RecyclerView recyclerView;
     List<RutaViewModel> ListRutas;
+    EditText NombreCamion;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_real_time_routes, container, false);
+        NombreCamion = root.findViewById(R.id.editText_Nombre);
         return root;
     }
 
@@ -51,13 +54,13 @@ public class RTRFragment extends Fragment {
         if (activity == null) return;
 
         recyclerView = view.findViewById(R.id.rv_rtr_rutas);
-        GridLayoutManager mGridLayoutManager = new GridLayoutManager(view.getContext(),2);
+        GridLayoutManager mGridLayoutManager = new GridLayoutManager(view.getContext(),1);
         recyclerView.setLayoutManager(mGridLayoutManager);
 
         ListRutas = new ArrayList<>();
         readFile();
 
-        RtrAdapter myAdapter = new RtrAdapter(ListRutas,activity);
+        RtrAdapter myAdapter = new RtrAdapter(ListRutas,activity,NombreCamion);
         recyclerView.setAdapter(myAdapter);
 
     }

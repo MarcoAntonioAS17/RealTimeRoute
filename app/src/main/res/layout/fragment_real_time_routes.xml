@@ -7,13 +7,31 @@
     android:background="@color/white"
     tools:context=".ui.realTimeRoutes.RTRFragment">
 
+    <EditText
+        android:id="@+id/editText_Nombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/editText_ruta"
+        android:inputType="textShortMessage|number|text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_rtr_rutas"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:paddingTop="5dp"
+        android:paddingRight="5dp"
         android:paddingBottom="5dp"
-        android:paddingRight="5dp"/>
+        android:scrollbars="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_Nombre" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

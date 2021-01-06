@@ -34,4 +34,6 @@
     <string name="info_contacto_title">Contacto</string>
     <string name="info_contacto">antonioarcosmarco@gmail.com</string>
 
+    <string name="editText_ruta">Ingresa el numero de camión</string>
+
 </resources>

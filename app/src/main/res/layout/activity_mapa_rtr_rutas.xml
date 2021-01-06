@@ -1,15 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.home.MapsActivity">
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/map"
         android:layout_height="match_parent"
         android:layout_width="match_parent"/>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_ruta_ida"
+        style="@style/customExtendedFAB2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fab_ida"
+        android:layout_marginBottom="16dp"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/fab_ruta_regreso"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:checkable="true"
+        android:layout_marginRight="16dp"
+        android:backgroundTint="@color/orange"
+        />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_ruta_regreso"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fab_regreso"
+        android:layout_marginBottom="16dp"
+        android:textAlignment="center"
+        android:layout_marginLeft="16dp"
+        android:backgroundTint="@color/orange"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/fab_ruta_ida"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_gps_rt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:background="@color/black"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:src="@drawable/ic_baseline_gps_fixed_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 
