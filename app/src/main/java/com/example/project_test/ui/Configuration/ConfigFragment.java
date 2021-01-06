@@ -45,7 +45,6 @@ import java.util.UUID;
 
 public class ConfigFragment extends Fragment {
 
-    private ConfigViewModel configViewModel;
     private FirebaseStorage storage;
 
 
@@ -53,12 +52,8 @@ public class ConfigFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        configViewModel =
-                new ViewModelProvider(this).get(ConfigViewModel.class);
         View root = inflater.inflate(R.layout.fragment_configuration, container, false);
-        final TextView textView= root.findViewById(R.id.text_configuration);
         final Button Update_button = root.findViewById(R.id.button_update);
-        configViewModel.getText().observe(getViewLifecycleOwner(), s -> textView.setText(s));
 
         Update_button.setOnClickListener(v -> {
             obtener_datos();

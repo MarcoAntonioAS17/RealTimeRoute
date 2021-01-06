@@ -58,6 +58,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -96,29 +98,37 @@ public class MapsActivity extends Fragment
         GoogleMap.OnPolylineClickListener {
 
     FloatingActionButton fab_gps;
-    FloatingActionButton fab_go;
     private GoogleMap mMap;
     private MapView mapView;
     View mView;
-    private FusedLocationProviderClient fusedLocationClient;
     LocationManager locationManager = null;
     LocationListener locationListener = null;
     double latitude = 0, longitude = 0;
+    boolean gps_activado = false;
+
+    FirebaseDatabase database;
+    DatabaseReference myRef;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.activity_maps, container, false);
         fab_gps = mView.findViewById(R.id.fab_gps);
-        fab_gps.setOnClickListener(view ->
-                boton_gps()
+        fab_gps.setOnClickListener(view ->{
+                gps_activado = !gps_activado;
+                if (gps_activado){
+                    boton_gps();
+                    database= FirebaseDatabase.getInstance();
+                    myRef = database.getReference("Palchan Seguro").child("Camion 10");
+                    Toast.makeText(getContext(),"GPS activado",Toast.LENGTH_LONG).show();
+                }else{
+                    locationManager.removeUpdates(locationListener);
+                    Toast.makeText(getContext(),"GPS desactivado",Toast.LENGTH_LONG).show();
+                    myRef.removeValue();
+                }
+            }
         );
 
-        fab_go = mView.findViewById(R.id.fab_go);
-        fab_go.setOnClickListener(view ->
-                Snackbar.make(view, "GO Float Action Button", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show()
-        );
         locationListener = (location) -> {
             latitude = location.getLatitude ();
             longitude = location.getLongitude ();
@@ -127,9 +137,21 @@ public class MapsActivity extends Fragment
             mMap.addMarker(new MarkerOptions().
                     position(new LatLng(latitude,longitude))
                     .title("Tú"));
+
+            subir_datos(latitude,longitude);
         };
 
         return mView;
+    }
+
+    private void subir_datos(double lat, double lng) {
+
+
+        LatLng latLng = new LatLng(lat,lng);
+
+        myRef.setValue(latLng);
+
+
     }
 
 
@@ -145,44 +167,27 @@ public class MapsActivity extends Fragment
             return;
         }
 
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            // Logic to handle location object
-                            Log.w("TYAM", "Latitude=>" + location.getLatitude() + " Longitud=>" + location.getLongitude());
-                        }
-                    }
-                });
-
         locationManager = (LocationManager) getContext().getSystemService (Context.LOCATION_SERVICE);
 
         if (locationManager.isProviderEnabled (LocationManager.GPS_PROVIDER)) {
             locationManager.requestLocationUpdates (LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
         }
 
-        /*Snackbar.make(mView, "GPS Float Action Button", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();*/
     }
 
     @Override
-    public void onPause () {
-        super.onPause ();
+    public void onDestroy() {
+        super.onDestroy();
         try{
             locationManager.removeUpdates(locationListener);
         }catch (Exception ex){
             ex.printStackTrace();
         }
-
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
-
     }
 
     @Override

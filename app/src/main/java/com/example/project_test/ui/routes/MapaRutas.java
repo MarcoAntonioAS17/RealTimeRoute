@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.project_test.MainActivity;
 import com.example.project_test.R;
+import com.example.project_test.ui.Configuration.puntos;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -29,6 +30,11 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.SphericalUtil;
 
 import org.json.JSONException;
@@ -53,6 +59,10 @@ public class MapaRutas extends Fragment
     List<LatLng> latLngIda;
     List<LatLng> latLngVuelta;
     boolean activar_ida = true, activar_regreso = true;
+
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+    List<puntos> listCamiones = null;
 
     @Nullable
     @Override
@@ -83,7 +93,7 @@ public class MapaRutas extends Fragment
             }
         );
 
-
+        database = FirebaseDatabase.getInstance();
         return  mView;
     }
 
@@ -98,14 +108,14 @@ public class MapaRutas extends Fragment
             mapView.onResume();
             mapView.getMapAsync(this);
         }
-        Log.w("TYAM","Mapa rutas onViewCreated");
+
         Bundle bundle = getArguments ();
         if (bundle == null) return;
         String ruta =  bundle.getString(RUTA_ID);
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(ruta);
-        Log.d("TYAM","Ruta=>"+ruta);
         readFile(ruta);
-
+        listCamiones = new ArrayList<>();
+        myRef = database.getReference(ruta);
     }
 
     @Override
@@ -124,6 +134,29 @@ public class MapaRutas extends Fragment
         );
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(ruta,1000,1000,10));
+        obtener_camiones(googleMap);
+    }
+
+    private void obtener_camiones(GoogleMap googleMap) {
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (listCamiones != null)
+                    listCamiones.clear();
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    puntos latLng = snapshot.getValue(puntos.class);
+                    Log.d("TYAM=>",latLng.getLatitude()+","+latLng.getLongitude());
+                    listCamiones.add(latLng);
+                }
+                cargar_elementos(googleMap);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 
@@ -133,7 +166,7 @@ public class MapaRutas extends Fragment
 
         Polyline ida = null, regreso = null;
 
-        if(latLngIda != null && activar_ida ){
+        if (latLngIda != null && activar_ida ){
             poner_flechas(googleMap,latLngIda);
 
             ida = googleMap.addPolyline(new PolylineOptions()
@@ -142,13 +175,21 @@ public class MapaRutas extends Fragment
                     .addAll(latLngIda));
         }
 
-        if(latLngVuelta !=null && activar_regreso){
+        if (latLngVuelta !=null && activar_regreso){
             poner_flechas(googleMap,latLngVuelta);
 
             regreso = googleMap.addPolyline(new PolylineOptions()
                     .clickable(true)
                     .color(Color.RED)
                     .addAll(latLngVuelta));
+        }
+
+        Log.d("TYAM","Tamano=>"+listCamiones.size());
+        if (listCamiones != null){
+            for (puntos item: listCamiones){
+                mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(item.getLatitude(),item.getLongitude())));
+            }
         }
 
         mMap.addMarker(new MarkerOptions().

@@ -14,7 +14,6 @@
     <string name="menu_configuration">Configuración</string>
     <string name="title_activity_maps">Map</string>
 
-    <string name="update_button">Actualizar Datos</string>
     <string name="fab_ida">IDA</string>
     <string name="fab_regreso">REGRESO</string>
 
@@ -26,5 +25,13 @@
     <string name="config_problema_hint">Detalles del problema o ruta incorrecta</string>
     <string name="config_mensaje">Los datos proporcionados son para fines de calidad y no se compartirán con ninguna empresa de terceros</string>
     <string name="config_enviar">Enviar</string>
+
+    <string name="info_actualizar_title">Actualizar</string>
+    <string name="info_actualizar">Descargar rutas y fotos con la versión más reciente</string>
+    <string name="info_actualizar_button">Actualizar Datos</string>
+    <string name="info_title">Información</string>
+    <string name="info">Esta aplicación muestra las ruta en el mapa y la ubicación de los camiones en tiempo real, los datos son almacenados en la nube para una constante actualización y congruencia de los datos</string>
+    <string name="info_contacto_title">Contacto</string>
+    <string name="info_contacto">antonioarcosmarco@gmail.com</string>
 
 </resources>
