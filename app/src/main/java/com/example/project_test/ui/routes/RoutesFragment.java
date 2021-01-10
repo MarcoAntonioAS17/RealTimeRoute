@@ -42,8 +42,6 @@ public class RoutesFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //((MainActivity) getActivity()).hideFloatingActionButton();
-
         Activity activity = getActivity ();
         if (activity == null) return;
 

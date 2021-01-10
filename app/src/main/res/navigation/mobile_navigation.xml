@@ -3,18 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_routes">
 
-    <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.project_test.ui.home.MapsActivity"
-        android:label="@string/menu_home"
-        tools:layout="@layout/activity_maps" />
 
     <fragment
         android:id="@+id/nav_routes"
         android:name="com.example.project_test.ui.routes.RoutesFragment"
-        android:label="@string/menu_routes"
+        android:label="@string/menu_home"
         tools:layout="@layout/fragment_see_routes" >
         <action
             android:id="@+id/action_nav_routes_to_mapa_rutas"
