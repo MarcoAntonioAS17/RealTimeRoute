@@ -20,7 +20,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.project_test.MainActivity;
 import com.example.project_test.R;
-import com.example.project_test.ui.Configuration.puntos;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -75,7 +74,7 @@ public class RtrMapaRutas extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.activity_mapa_rtr_rutas, container, false);
-        
+
         mView.setLabelFor(R.id.mapa_rtr_rutas);
 
         ExtendedFloatingActionButton fab_ida = mView.findViewById(R.id.fab_ruta_ida);
@@ -107,7 +106,6 @@ public class RtrMapaRutas extends Fragment
                     if (gps_activado){
                         boton_gps();
 
-                        //myRef = database.getReference("Palchan Seguro").child("Camion 10");
                         Toast.makeText(getContext(),"GPS activado",Toast.LENGTH_LONG).show();
                     }else{
                         locationManager.removeUpdates(locationListener);
@@ -121,11 +119,7 @@ public class RtrMapaRutas extends Fragment
             latitude = location.getLatitude ();
             longitude = location.getLongitude ();
             Log.d ("TYAM", "Latitude " + latitude + " - Longitude " + longitude);
-            /*mMap.clear();
-            mMap.addMarker(new MarkerOptions().
-                    position(new LatLng(latitude,longitude))
-                    .title("Tú"));
-            */
+
             cargar_elementos(mMap);
             subir_datos(latitude,longitude);
         };
@@ -134,7 +128,6 @@ public class RtrMapaRutas extends Fragment
     }
 
     private void subir_datos(double lat, double lng) {
-
 
         LatLng latLng = new LatLng(lat,lng);
 
@@ -167,6 +160,7 @@ public class RtrMapaRutas extends Fragment
     @Override
     public void onDestroy() {
         super.onDestroy();
+        myRef.removeValue();
         try{
             locationManager.removeUpdates(locationListener);
         }catch (Exception ex){
@@ -225,7 +219,8 @@ public class RtrMapaRutas extends Fragment
         if (latitude != 0){
             mMap.addMarker(new MarkerOptions().
                     position(new LatLng(latitude,longitude))
-                    .title("Tú"));
+                    .title("Tú")
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.mi_bus)));
         }
 
         if (latLngIda != null && activar_ida ){

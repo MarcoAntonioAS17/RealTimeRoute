@@ -1,23 +1,26 @@
 package com.example.project_test.ui.routes;
 
-import android.app.Activity;
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.project_test.MainActivity;
 import com.example.project_test.R;
-import com.example.project_test.ui.Configuration.puntos;
+import com.example.project_test.models.puntos;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -29,7 +32,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -64,6 +67,11 @@ public class MapaRutas extends Fragment
     DatabaseReference myRef;
     List<puntos> listCamiones = null;
 
+    double latitude = 0, longitude = 0;
+    boolean gps_activado = false;
+    LocationManager locationManager = null;
+    LocationListener locationListener = null;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -93,8 +101,61 @@ public class MapaRutas extends Fragment
             }
         );
 
+        FloatingActionButton fab_gps = mView.findViewById(R.id.fab_gps);
+        fab_gps.setOnClickListener(view ->{
+                    gps_activado = !gps_activado;
+                    if (gps_activado){
+                        boton_gps();
+                        Toast.makeText(getContext(),"GPS activado",Toast.LENGTH_LONG).show();
+                    }else{
+                        latitude = 0;
+                        longitude = 0;
+                        locationManager.removeUpdates(locationListener);
+                        Toast.makeText(getContext(),"GPS desactivado",Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+
+        locationListener = (location) -> {
+            latitude = location.getLatitude ();
+            longitude = location.getLongitude ();
+            Log.d ("TYAM", "Latitude " + latitude + " - Longitude " + longitude);
+
+            cargar_elementos(mMap);
+        };
+
         database = FirebaseDatabase.getInstance();
         return  mView;
+    }
+
+    private void boton_gps() {
+
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1001);
+
+
+            return;
+        }
+
+        locationManager = (LocationManager) getContext().getSystemService (Context.LOCATION_SERVICE);
+
+        if (locationManager.isProviderEnabled (LocationManager.GPS_PROVIDER)) {
+            locationManager.requestLocationUpdates (LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
+        }
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        try{
+            locationManager.removeUpdates(locationListener);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -154,7 +215,7 @@ public class MapaRutas extends Fragment
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(getContext(),"Ocurrió un error",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -165,6 +226,13 @@ public class MapaRutas extends Fragment
         mMap.clear();
 
         Polyline ida = null, regreso = null;
+
+        if (latitude != 0){
+            mMap.addMarker(new MarkerOptions().
+                    position(new LatLng(latitude,longitude))
+                    .title("Tú")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+        }
 
         if (latLngIda != null && activar_ida ){
             poner_flechas(googleMap,latLngIda);
@@ -188,7 +256,9 @@ public class MapaRutas extends Fragment
         if (listCamiones != null){
             for (puntos item: listCamiones){
                 mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(item.getLatitude(),item.getLongitude())));
+                    .position(new LatLng(item.getLatitude(),item.getLongitude()))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.bus2))
+                );
             }
         }
 

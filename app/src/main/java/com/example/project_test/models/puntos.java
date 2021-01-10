@@ -1,4 +1,4 @@
-package com.example.project_test.ui.Configuration;
+package com.example.project_test.models;
 
 public class puntos {
 

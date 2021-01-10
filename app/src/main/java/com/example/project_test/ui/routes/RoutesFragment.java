@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.example.project_test.models.RutaViewModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -30,6 +32,7 @@ public class RoutesFragment extends Fragment{
 
     RecyclerView recyclerView;
     List<RutaViewModel> ListRutas;
+    TextView mensaje_actualizacion;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -46,12 +49,17 @@ public class RoutesFragment extends Fragment{
         if (activity == null) return;
 
         recyclerView = view.findViewById(R.id.rv_rutas);
+        mensaje_actualizacion = view.findViewById(R.id.text_actualizacion);
+
         GridLayoutManager mGridLayoutManager = new GridLayoutManager(view.getContext(),2);
         recyclerView.setLayoutManager(mGridLayoutManager);
 
         ListRutas = new ArrayList<>();
         readFile();
 
+        if(ListRutas.size() > 0){
+            mensaje_actualizacion.setText("");
+        }
         RutaAdapter myAdapter = new RutaAdapter(ListRutas,activity);
         recyclerView.setAdapter(myAdapter);
 
